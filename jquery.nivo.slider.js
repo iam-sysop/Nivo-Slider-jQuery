@@ -43,7 +43,7 @@
             if($(this).hasClass('active')) return false;
             clearInterval(timer);
             timer = '';
-            sliderImg.attr('src', vars.currentImage.attr('src'));
+            sliderImg.attr('src', vars.currentImage.getImageSrc());
             vars.currentSlide = index - 1;
             nivoRun(slider, kids, settings, 'control');
         });
@@ -118,7 +118,7 @@
         // Set first background
         var sliderImg = $('<img/>').addClass('nivo-main-image');
         sliderImg.attr({
-            src: vars.currentImage.attr('src'),
+            src: vars.currentImage.getImageSrc(),
             alt: vars.currentImage.attr('alt')
         }).show();
         slider.append(sliderImg);
@@ -128,7 +128,7 @@
         $(window).resize(function() {
             slider.children('img').width(slider.width());
             sliderImg.attr({
-                src: vars.currentImage.attr('src'),
+                src: vars.currentImage.getImageSrc(),
                 alt: vars.currentImage.attr('alt')
             });
             sliderImg.stop().height('auto');
@@ -228,7 +228,7 @@
         // Event when Animation finishes
         slider.bind('nivo:animFinished', function(){
             sliderImg.attr({
-                src: vars.currentImage.attr('src'),
+                src: vars.currentImage.getImageSrc(),
                 alt: vars.currentImage.attr('alt')
             });
             vars.running = false; 
@@ -262,7 +262,7 @@
                 
                 if(i === settings.slices-1){
                     slider.append(
-                        $('<div class="nivo-slice" name="'+i+'"><img src="'+ vars.currentImage.attr('src') +'" style="position:absolute; width:'+ slider.width() +'px; height:auto; display:block !important; top:0; left:-'+ ((sliceWidth + (i * sliceWidth)) - sliceWidth) +'px;" /></div>').css({ 
+                        $('<div class="nivo-slice" name="'+i+'"><img src="'+ vars.currentImage.getImageSrc() +'" style="position:absolute; width:'+ slider.width() +'px; height:auto; display:block !important; top:0; left:-'+ ((sliceWidth + (i * sliceWidth)) - sliceWidth) +'px;" /></div>').css({
                             left:(sliceWidth*i)+'px', 
                             width:(slider.width()-(sliceWidth*i))+'px',
                             height:sliceHeight+'px', 
@@ -272,7 +272,7 @@
                     );
                 } else {
                     slider.append(
-                        $('<div class="nivo-slice" name="'+i+'"><img src="'+ vars.currentImage.attr('src') +'" style="position:absolute; width:'+ slider.width() +'px; height:auto; display:block !important; top:0; left:-'+ ((sliceWidth + (i * sliceWidth)) - sliceWidth) +'px;" /></div>').css({ 
+                        $('<div class="nivo-slice" name="'+i+'"><img src="'+ vars.currentImage.getImageSrc() +'" style="position:absolute; width:'+ slider.width() +'px; height:auto; display:block !important; top:0; left:-'+ ((sliceWidth + (i * sliceWidth)) - sliceWidth) +'px;" /></div>').css({
                             left:(sliceWidth*i)+'px', 
                             width:sliceWidth+'px',
                             height:sliceHeight+'px',
@@ -299,7 +299,7 @@
                 for(var cols = 0; cols < settings.boxCols; cols++){
                     if(cols === settings.boxCols-1){
                         slider.append(
-                            $('<div class="nivo-box" name="'+ cols +'" rel="'+ rows +'"><img src="'+ vars.currentImage.attr('src') +'" style="position:absolute; width:'+ slider.width() +'px; height:auto; display:block; top:-'+ (boxHeight*rows) +'px; left:-'+ (boxWidth*cols) +'px;" /></div>').css({ 
+                            $('<div class="nivo-box" name="'+ cols +'" rel="'+ rows +'"><img src="'+ vars.currentImage.getImageSrc() +'" style="position:absolute; width:'+ slider.width() +'px; height:auto; display:block; top:-'+ (boxHeight*rows) +'px; left:-'+ (boxWidth*cols) +'px;" /></div>').css({
                                 opacity:0,
                                 left:(boxWidth*cols)+'px', 
                                 top:(boxHeight*rows)+'px',
@@ -310,7 +310,7 @@
                         $('.nivo-box[name="'+ cols +'"]', slider).height($('.nivo-box[name="'+ cols +'"] img', slider).height()+'px');
                     } else {
                         slider.append(
-                            $('<div class="nivo-box" name="'+ cols +'" rel="'+ rows +'"><img src="'+ vars.currentImage.attr('src') +'" style="position:absolute; width:'+ slider.width() +'px; height:auto; display:block; top:-'+ (boxHeight*rows) +'px; left:-'+ (boxWidth*cols) +'px;" /></div>').css({ 
+                            $('<div class="nivo-box" name="'+ cols +'" rel="'+ rows +'"><img src="'+ vars.currentImage.getImageSrc() +'" style="position:absolute; width:'+ slider.width() +'px; height:auto; display:block; top:-'+ (boxHeight*rows) +'px; left:-'+ (boxWidth*cols) +'px;" /></div>').css({
                                 opacity:0,
                                 left:(boxWidth*cols)+'px', 
                                 top:(boxHeight*rows)+'px',
@@ -345,19 +345,19 @@
             if(!nudge){
                 settings.onNextSlide.call(this);
                 sliderImg.attr({
-                    src: vars.currentImage.attr('src'),
+                    src: vars.currentImage.getImageSrc(),
                     alt: vars.currentImage.attr('alt')
                 });
             } else {
                 if(nudge === 'prev'){
                     sliderImg.attr({
-                        src: vars.currentImage.attr('src'),
+                        src: vars.currentImage.getImageSrc(),
                         alt: vars.currentImage.attr('alt')
                     });
                 }
                 if(nudge === 'next'){
                     sliderImg.attr({
-                        src: vars.currentImage.attr('src'),
+                        src: vars.currentImage.getImageSrc(),
                         alt: vars.currentImage.attr('alt')
                     });
                 }
@@ -725,5 +725,9 @@
     };
 
     $.fn._reverse = [].reverse;
+
+    $.fn.getImageSrc = function () {
+        return typeof this.prop('currentSrc') !== 'undefined' ? this.prop('currentSrc') : this.attr('src');
+    }
     
 })(jQuery);
